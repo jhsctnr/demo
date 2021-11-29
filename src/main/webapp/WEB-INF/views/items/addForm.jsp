@@ -45,37 +45,26 @@
             </c:if>
             </spring:bind>
         </div>
+
         <div>
             <label for="price"><spring:message code="label.item.price"/></label>
-            <c:choose>
-            <c:when test="${errors.hasFieldErrors('price')}">
+
             <input type="text" id="price" name="price"
                    class="form-control field-error" placeholder="가격을 입력하세요">
             <div class="field-error">
                 ${errors.getFieldError('price')}
             </div>
-            </c:when>
-            <c:otherwise>
-                <input type="text" id="price" name="price"
-                       class="form-control" placeholder="가격을 입력하세요">
-            </c:otherwise>
-            </c:choose>
+
         </div>
         <div>
             <label for="quantity"><spring:message code="label.item.quantity"/></label>
-            <c:choose>
-            <c:when test="${errors.hasFieldErrors('quantity')}">
+
             <input type="text" id="quantity" name="quantity"
                    class="form-control field-error" placeholder="수량을 입력하세요">
             <div class="field-error">
                 ${errors.getFieldError('quantity')}
             </div>
-            </c:when>
-            <c:otherwise>
-                <input type="text" id="quantity" name="quantity"
-                       class="form-control" placeholder="수량을 입력하세요">
-            </c:otherwise>
-            </c:choose>
+
         </div>
 
         <hr class="my-4">
