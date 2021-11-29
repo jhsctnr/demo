@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container" style="max-width: 600px">
@@ -19,8 +19,7 @@
         </div>
         <div class="col">
             <button class="w-100 btn btn-dark btn-lg"
-                    onclick="location.href='items.jsp'"
-                    th:onclick="|location.href='@{/login}'|" type="button">
+                    onclick="location.href='/login'" type="button">
                 로그인
             </button>
         </div>
