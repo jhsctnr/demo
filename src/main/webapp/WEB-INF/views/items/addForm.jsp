@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="srping" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html >
 <head>
     <meta charset="utf-8">
@@ -37,10 +38,10 @@
             <label for="itemName"><spring:message code="label.item.itemName"/></label>
             <spring:bind path="item.itemName">
             <input type="text" id="itemName" name="itemName"
-                   class="form-control ${status.error ? 'field-error' : ""}" placeholder="이름을 입력하세요">
+                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="이름을 입력하세요">
             <c:if test="${status.error}">
             <div class="field-error">
-                    <spring:message code="${status.errorCodes[0]}" arguments="${status.errors.getFieldError('itemName').arguments}"/>
+                <spring:message code="${status.errorCodes[0]}" arguments="${status.errors.getFieldError('itemName').arguments}"/>
             </div>
             </c:if>
             </spring:bind>
@@ -48,12 +49,15 @@
 
         <div>
             <label for="price"><spring:message code="label.item.price"/></label>
-
+            <spring:bind path="item.price">
             <input type="text" id="price" name="price"
-                   class="form-control field-error" placeholder="가격을 입력하세요">
+                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="가격을 입력하세요">
+            <c:if test="${status.error}">
             <div class="field-error">
-                ${errors.getFieldError('price')}
+                <spring:message code="${status.errorCodes[0]}" arguments="${status.errors.getFieldError('price').arguments}" text="${status.errorMessage}"/>
             </div>
+            </c:if>
+            </spring:bind>
 
         </div>
         <div>
@@ -62,7 +66,6 @@
             <input type="text" id="quantity" name="quantity"
                    class="form-control field-error" placeholder="수량을 입력하세요">
             <div class="field-error">
-                ${errors.getFieldError('quantity')}
             </div>
 
         </div>
