@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter @Setter
 public class ItemUpdateForm {
 
-    @NotBlank
+    @NotNull
     private Long id;
 
     @NotBlank

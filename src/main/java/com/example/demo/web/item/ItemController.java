@@ -3,6 +3,7 @@ package com.example.demo.web.item;
 import com.example.demo.domain.item.Item;
 import com.example.demo.domain.member.Member;
 import com.example.demo.web.item.form.ItemSaveForm;
+import com.example.demo.web.item.form.ItemUpdateForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,7 @@ public class ItemController {
     }
 
     @PostMapping("/add")
-    public String assItem(@Validated @ModelAttribute("item") ItemSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addItem(@Validated @ModelAttribute("item") ItemSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         //특정 필드 예외가 아닌 전체 예외
         if (form.getPrice() != null && form.getQuantity() != null) {
@@ -74,6 +75,38 @@ public class ItemController {
 
         redirectAttributes.addAttribute("itemId", 1L);
         redirectAttributes.addAttribute("status", true);
+
+        return "redirect:/items/{itemId}";
+    }
+
+    @GetMapping("{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model) {
+        Item item = new Item("test", 10000, 10);
+        item.setId(1L);
+        model.addAttribute("item", item);
+        return "items/editForm";
+    }
+
+    @PostMapping("{itemId}/edit")
+    public String editItem(@PathVariable Long itemId, @Validated @ModelAttribute("item") ItemUpdateForm form, BindingResult bindingResult) {
+        //특정 필드 예외가 아닌 전체 예외
+        if (form.getPrice() != null && form.getQuantity() != null) {
+            int resultPrice = form.getPrice() * form.getQuantity();
+            if(resultPrice < 1000) {
+                bindingResult.reject("totalPriceMin", new Object[]{1000, resultPrice}, null);
+            }
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "items/editForm";
+        }
+
+        //성공 로직
+        Item item = new Item();
+        item.setItemName(form.getItemName());
+        item.setPrice(form.getPrice());
+        item.setQuantity(form.getQuantity());
 
         return "redirect:/items/{itemId}";
     }

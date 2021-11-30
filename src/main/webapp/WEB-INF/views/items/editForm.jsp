@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html >
 <head>
     <meta charset="utf-8">
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
             max-width: 560px;
@@ -19,59 +21,73 @@
 <div class="container">
 
     <div class="py-5 text-center">
-        <h2 th:text="#{page.updateItem}">상품 수정</h2>
+        <h2><spring:message code="page.updateItem"/></h2>
     </div>
 
-    <form action="item.jsp" th:action th:object="${item}" method="post">
+    <form:form modelAttribute="item" method="post">
+        <spring:hasBindErrors name="item">
+        <div>
+            <c:forEach var="err" items="${errors.globalErrors}">
+            <p class="field-error"><spring:message code="${err.codes[0]}" arguments="${err.arguments}" text="${err.defaultMessage}"/></p>
+            </c:forEach>
+        </div>
+        </spring:hasBindErrors>
 
-        <div th:if="${#fields.hasGlobalErrors()}">
-            <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
-        </div>
 
         <div>
-            <label for="id" th:text="#{label.item.id}">상품 ID</label>
-            <input type="text" id="id" th:field="*{id}" class="form-control" readonly>
+            <label for="id"><spring:message code="label.item.id"/></label>
+            <input type="text" id="id" name="id" value="${item.id}" class="form-control" readonly>
         </div>
         <div>
-            <label for="itemName" th:text="#{label.item.itemName}">상품명</label>
-            <input type="text" id="itemName" th:field="*{itemName}"
-                   th:errorclass="field-error" class="form-control" placeholder="이름을 입력하세요">
-            <div class="field-error" th:errors="*{itemName}">
-                상품명 오류
+            <label for="itemName"><spring:message code="label.item.itemName"/></label>
+            <spring:bind path="item.itemName">
+            <input type="text" id="itemName" name="itemName" value="${status.value}"
+                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="이름을 입력하세요">
+            <c:if test="${status.error}">
+            <div class="field-error">
+                <form:errors path="itemName"/>
             </div>
+            </c:if>
+            </spring:bind>
         </div>
         <div>
-            <label for="price" th:text="#{label.item.price}">가격</label>
-            <input type="text" id="price" th:field="*{price}"
-                   th:errorclass="field-error" class="form-control" placeholder="가격을 입력하세요">
-            <div class="field-error" th:errors="*{price}">
-                가격 오류
+            <label for="price"><spring:message code="label.item.price"/></label>
+            <spring:bind path="item.price">
+            <input type="text" id="price" name="price" value="${status.value}"
+                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="가격을 입력하세요">
+            <c:if test="${status.error}">
+            <div class="field-error">
+                <form:errors path="price"/>
             </div>
+            </c:if>
+            </spring:bind>
         </div>
         <div>
-            <label for="quantity" th:text="#{label.item.quantity}">수량</label>
-            <input type="text" id="quantity" th:field="*{quantity}"
-                   th:errorclass="field-error" class="form-control" placeholder="수량을 입력하세요">
-            <div class="field-error" th:errors="*{quantity}">
-                수량 오류
+            <label for="quantity"><spring:message code="label.item.quantity"/></label>
+            <spring:bind path="item.quantity">
+            <input type="text" id="quantity" name="quantity" value="${status.value}"
+                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="수량을 입력하세요">
+            <c:if test="${status.error}">
+            <div class="field-error">
+                <form:errors path="quantity"/>
             </div>
+            </c:if>
+            </spring:bind>
         </div>
 
         <hr class="my-4">
 
         <div class="row">
             <div class="col">
-                <button class="w-100 btn btn-primary btn-lg" type="submit" th:text="#{button.save}">저장</button>
+                <button class="w-100 btn btn-primary btn-lg" type="submit"><spring:message code="button.save"/></button>
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
-                        onclick="location.href='item.html'"
-                        th:onclick="|location.href='@{/items/{itemId}(itemId=${item.id})}'|"
-                        type="button" th:text="#{button.cancel}">취소</button>
+                        onclick="location.href='/items/${itemId}'"
+                        type="button"><spring:message code="button.cancel"/></button>
             </div>
         </div>
-
-    </form>
+    </form:form>
 
 </div> <!-- /container -->
 </body>

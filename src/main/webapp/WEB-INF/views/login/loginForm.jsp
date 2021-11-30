@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html >
 <head>
     <meta charset="utf-8">
@@ -19,20 +21,37 @@
     <div class="py-5 text-center">
         <h2>로그인</h2>
     </div>
-    <form action method="post">
-        <div >
-            <p class="field-error">전체 오류 메시지</p>
-        </div>
+    <form:form modelAttribute="loginForm" method="post">
+        <spring:hasBindErrors name="item">
+            <div>
+                <c:forEach var="err" items="${errors.globalErrors}">
+                    <p class="field-error"><spring:message code="${err.codes[0]}" arguments="${err.arguments}" text="${err.defaultMessage}"/></p>
+                </c:forEach>
+            </div>
+        </spring:hasBindErrors>
         <div>
             <label for="loginId">로그인 ID</label>
-            <input type="text" id="loginId" name="loginId" class="form-control" />
-            <div class="field-error"/>
+            <spring:bind path="loginForm.loginId">
+            <input type="text" id="loginId" name="loginId" value="${status.value}"
+                   class="form-control ${status.error ? 'field-error' : ''}" />
+            <c:if test="${status.error}">
+            <div class="field-error">
+                <form:errors path="loginId"/>
+            </div>
+            </c:if>
+            </spring:bind>
         </div>
         <div>
             <label for="password">비밀번호</label>
-            <input type="password" id="password" name="password"
-                   class="form-control">
-            <div class="field-error" />
+            <spring:bind path="loginForm.password">
+            <input type="password" id="password" name="password" value="${status.value}"
+                   class="form-control ${status.error ? 'field-error' : ''}">
+            <c:if test="${status.error}">
+                <div class="field-error">
+                    <form:errors path="password"/>
+                </div>
+            </c:if>
+            </spring:bind>
         </div>
         <hr class="my-4">
         <div class="row">
@@ -46,7 +65,7 @@
                         type="button">취소</button>
             </div>
         </div>
-    </form>
+    </form:form>
 </div> <!-- /container -->
 </body>
 </html>

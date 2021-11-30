@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="srping" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html >
 <head>
     <meta charset="utf-8">
@@ -29,7 +28,7 @@
         <spring:hasBindErrors name="item">
         <div>
             <c:forEach var="err" items="${errors.globalErrors}">
-            <p class="field-error"><spring:message code="${err.codes[0]}" arguments="${err.arguments}"/></p>
+            <p class="field-error"><spring:message code="${err.codes[0]}" arguments="${err.arguments}" text="${err.defaultMessage}"/></p>
             </c:forEach>
         </div>
         </spring:hasBindErrors>
@@ -38,10 +37,10 @@
             <label for="itemName"><spring:message code="label.item.itemName"/></label>
             <spring:bind path="item.itemName">
             <input type="text" id="itemName" name="itemName"
-                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="이름을 입력하세요">
+                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="이름을 입력하세요" value="${status.value}">
             <c:if test="${status.error}">
             <div class="field-error">
-                <spring:message code="${status.errorCodes[0]}" arguments="${status.errors.getFieldError('itemName').arguments}"/>
+                <form:errors path="itemName"/>
             </div>
             </c:if>
             </spring:bind>
@@ -51,10 +50,10 @@
             <label for="price"><spring:message code="label.item.price"/></label>
             <spring:bind path="item.price">
             <input type="text" id="price" name="price"
-                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="가격을 입력하세요">
+                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="가격을 입력하세요" value="${status.value}">
             <c:if test="${status.error}">
             <div class="field-error">
-                <spring:message code="${status.errorCodes[0]}" arguments="${status.errors.getFieldError('price').arguments}" text="${status.errorMessage}"/>
+                <form:errors path="price"/>
             </div>
             </c:if>
             </spring:bind>
@@ -62,12 +61,15 @@
         </div>
         <div>
             <label for="quantity"><spring:message code="label.item.quantity"/></label>
-
+            <spring:bind path="item.quantity">
             <input type="text" id="quantity" name="quantity"
-                   class="form-control field-error" placeholder="수량을 입력하세요">
+                   class="form-control ${status.error ? 'field-error' : ''}" placeholder="수량을 입력하세요" value="${status.value}">
+            <c:if test="${status.error}">
             <div class="field-error">
+                <form:errors path="quantity"/>
             </div>
-
+            </c:if>
+            </spring:bind>
         </div>
 
         <hr class="my-4">
