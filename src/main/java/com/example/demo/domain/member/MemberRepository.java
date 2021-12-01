@@ -16,18 +16,18 @@ public class MemberRepository {
     private final SqlSessionTemplate dao;
 
     public int saveMember(Member member) {
-        return dao.insert("item.saveMember", member);
+        return dao.insert("item.findById", member);
     }
 
     public Member findById(Long id) {
-        return dao.selectOne("item.getMemberById", id);
+        return dao.selectOne("com.example.demo.domain.member.MemberMapper.getMemberById", id);
     }
 
-    public List<Member> findByLoginId(String loginId) {
-        return dao.selectList("item.getMemberByLoginId", loginId);
+    public Member findByLoginId(String loginId) {
+        return dao.selectOne("item.findByLoginId", loginId);
     }
 
     public List<Member> findAll() {
-        return dao.selectList("item.getMemberAll");
+        return dao.selectList("item.findAll");
     }
 }

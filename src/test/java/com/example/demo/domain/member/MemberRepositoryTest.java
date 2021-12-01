@@ -16,8 +16,11 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 class MemberRepositoryTest {
 
+//    @Autowired
+//    private MemberRepository memberRepository;
+
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberMapper memberMapper;
 
     @Test
     void saveMember() {
@@ -28,7 +31,7 @@ class MemberRepositoryTest {
         member.setPassword("test!");
 
         //when
-        int result = memberRepository.saveMember(member);
+        int result = memberMapper.saveMember(member);
 
         //then
         assertThat(result).isEqualTo(1);
@@ -39,11 +42,11 @@ class MemberRepositoryTest {
         //given
 
         //when
-        Member member = memberRepository.findById(2L);
+        Member member = memberMapper.findById(36L);
 
 
         //then
-        assertThat(member.getName()).isEqualTo("spring");
+        assertThat(member.getName()).isEqualTo("해성");
 
     }
 
@@ -56,22 +59,20 @@ class MemberRepositoryTest {
         memberNew.setPassword("test!");
 
         //when
-        memberRepository.saveMember(memberNew);
-        List<Member> memberList = memberRepository.findByLoginId("wonhoi");
-        Member member1 = memberList.stream()
-                .findAny()
-                .filter(member -> "wonhoi".equals(member.getLoginId()))
+        memberMapper.saveMember(memberNew);
+        Optional<Member> memberOptional = memberMapper.findByLoginId("test");
+        Member member1 = memberOptional.filter(member -> "test".equals(member.getLoginId()))
                 .orElse(null);
 
         //then
-        assertThat(member1.getLoginId()).isEqualTo("wonhoi");
+        assertThat(member1.getName()).isEqualTo("해성");
     }
 
     @Test
     void findAll() {
-        List<Member> all = memberRepository.findAll();
+        List<Member> all = memberMapper.findAll();
 
         //then
-        assertThat(all.size()).isEqualTo(2);
+        assertThat(all.size()).isEqualTo(1);
     }
 }

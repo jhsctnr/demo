@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="item">
+<mapper namespace="com.example.demo.domain.item.ItemMapper">
 
-    <insert id="saveMember" parameterType="com.example.demo.domain.member.Member">
-        INSERT INTO MEMBERS ( ID
-                            , LOGINID
-                            , NAME
-                            , PASSWORD )
-                     VALUES ( #{id}
-                            , #{loginId}
-                            , #{name}
-                            , #{password} )
+    <insert id="saveItem" parameterType="com.example.demo.domain.item.Item">
+        INSERT INTO ITEMS ( ITEMNAME
+                          , PRICE
+                          , QUANTITY )
+                   VALUES ( #{itemName}
+                          , #{price}
+                          , #{quantity} )
     </insert>
 
-    <select id="getMemberById" parameterType="long" resultType="com.example.demo.domain.member.Member">
+    <select id="findById" parameterType="long" resultType="com.example.demo.domain.item.Item">
         SELECT *
-          FROM MEMBERS
+          FROM ITEMS
          WHERE 1=1
            AND ID = #{id}
     </select>
 
-    <select id="getMemberByLoginId" parameterType="String" resultType="com.example.demo.domain.member.Member">
+    <select id="findAll" resultType="com.example.demo.domain.item.Item">
         SELECT *
-        FROM MEMBERS
-        WHERE 1=1
-          AND LOGINID = #{loginId}
+          FROM ITEMS
     </select>
 
-    <select id="getMemberAll" resultType="com.example.demo.domain.member.Member">
-        SELECT *
-          FROM MEMBERS
+    <select id="getId" resultType="long">
+        SELECT MAX(ID) AS id
+          FROM ITEMS
     </select>
 
+    <update id="updateItem" parameterType="com.example.demo.domain.item.Item">
+        UPDATE ITEMS
+           SET ITEMNAME = #{itemName}
+             , PRICE    = #{price}
+             , QUANTITY = #{quantity}
+         WHERE 1=1
+           AND ID = #{id}
+    </update>
+
+    <delete id="deleteItem" parameterType="long">
+        DELETE FROM ITEMS
+         WHERE 1=1
+           AND ID = #{id}
+    </delete>
 </mapper>

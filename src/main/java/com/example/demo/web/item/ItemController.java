@@ -1,6 +1,7 @@
 package com.example.demo.web.item;
 
 import com.example.demo.domain.item.Item;
+import com.example.demo.domain.item.ItemMapper;
 import com.example.demo.domain.member.Member;
 import com.example.demo.web.item.form.ItemSaveForm;
 import com.example.demo.web.item.form.ItemUpdateForm;
@@ -22,25 +23,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController {
 
+    private final ItemMapper itemMapper;
+
     @GetMapping
     public String items(Model model) {
-        List<Item> items = new ArrayList<>();
-        Item item1 = new Item("test", 10000, 10);
-        Item item2 = new Item("test1", 20000, 20);
-        item1.setId(1L);
-        item2.setId(2L);
-
-        items.add(item1);
-        items.add(item2);
+        List<Item> items = itemMapper.findAll();
         model.addAttribute("items", items);
-
         return "items/items";
     }
 
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model) {
-        Item item = new Item("test", 10000, 10);
-        item.setId(1L);
+        Item item = itemMapper.findById(itemId);
         model.addAttribute("item", item);
         return "items/item";
     }
@@ -73,29 +67,24 @@ public class ItemController {
         item.setPrice(form.getPrice());
         item.setQuantity(form.getQuantity());
 
-        redirectAttributes.addAttribute("itemId", 1L);
+        itemMapper.saveItem(item);
+        Long id = itemMapper.getId();
+
+        redirectAttributes.addAttribute("itemId", id);
         redirectAttributes.addAttribute("status", true);
 
         return "redirect:/items/{itemId}";
     }
 
-    @GetMapping("{itemId}/edit")
+    @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
-        Item item = new Item("test", 10000, 10);
-        item.setId(1L);
+        Item item = itemMapper.findById(itemId);
         model.addAttribute("item", item);
         return "items/editForm";
     }
 
     @PostMapping("{itemId}/edit")
     public String editItem(@PathVariable Long itemId, @Validated @ModelAttribute("item") ItemUpdateForm form, BindingResult bindingResult) {
-        //특정 필드 예외가 아닌 전체 예외
-        if (form.getPrice() != null && form.getQuantity() != null) {
-            int resultPrice = form.getPrice() * form.getQuantity();
-            if(resultPrice < 1000) {
-                bindingResult.reject("totalPriceMin", new Object[]{1000, resultPrice}, null);
-            }
-        }
 
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
@@ -103,11 +92,21 @@ public class ItemController {
         }
 
         //성공 로직
-        Item item = new Item();
-        item.setItemName(form.getItemName());
-        item.setPrice(form.getPrice());
-        item.setQuantity(form.getQuantity());
+        Item itemParam = new Item();
+        itemParam.setId(itemId);
+        itemParam.setItemName(form.getItemName());
+        itemParam.setPrice(form.getPrice());
+        itemParam.setQuantity(form.getQuantity());
 
+        itemMapper.updateItem(itemParam);
         return "redirect:/items/{itemId}";
+    }
+
+    @PostMapping("/delete")
+    public String deleteItem(@RequestParam Long itemId) {
+
+        itemMapper.deleteItem(itemId);
+
+        return "redirect:/items";
     }
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.demo.domain.member.MemberMapper">
+
+    <insert id="saveMember" parameterType="com.example.demo.domain.member.Member">
+        INSERT INTO MEMBERS ( LOGINID
+                            , NAME
+                            , PASSWORD )
+                     VALUES ( #{loginId}
+                            , #{name}
+                            , #{password} )
+    </insert>
+
+    <select id="findById" parameterType="long" resultType="com.example.demo.domain.member.Member">
+        SELECT *
+          FROM MEMBERS
+         WHERE 1=1
+           AND ID = #{id}
+    </select>
+
+    <select id="findByLoginId" parameterType="String" resultType="com.example.demo.domain.member.Member">
+        SELECT *
+        FROM MEMBERS
+        WHERE 1=1
+          AND LOGINID = #{loginId}
+    </select>
+
+    <select id="findAll" resultType="com.example.demo.domain.member.Member">
+        SELECT *
+          FROM MEMBERS
+    </select>
+
+</mapper>

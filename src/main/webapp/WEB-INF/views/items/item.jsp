@@ -30,15 +30,15 @@
     </div>
     <div>
         <label for="itemName"><spring:message code="label.item.itemName"/></label>
-        <input type="text" id="itemName" name="itemName" class="form-control" value="상품A" value="${item.itemName}" readonly>
+        <input type="text" id="itemName" name="itemName" class="form-control" value="${item.itemName}" readonly>
     </div>
     <div>
         <label for="price"><spring:message code="label.item.price"/></label>
-        <input type="text" id="price" name="price" class="form-control" value="10000" value="${item.price}" readonly>
+        <input type="text" id="price" name="price" class="form-control" value="${item.price}" readonly>
     </div>
     <div>
         <label for="quantity"><spring:message code="label.item.quantity"/></label>
-        <input type="text" id="quantity" name="quantity" class="form-control" value="10" value="${item.quantity}" readonly>
+        <input type="text" id="quantity" name="quantity" class="form-control" value="${item.quantity}" readonly>
     </div>
 
     <hr class="my-4">
@@ -48,6 +48,13 @@
             <button class="w-100 btn btn-primary btn-lg"
                     onclick="location.href='/items/${item.id}/edit'"
                     type="button"><spring:message code="page.updateItem"/></button>
+        </div>
+        <div class="col">
+            <form action="/items/delete" method="post">
+                <input type="hidden" name="itemId" value="${item.id}"/>
+                <button class="w-100 btn btn-primary btn-lg"
+                        type="submit"><spring:message code="button.delete"/></button>
+            </form>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
