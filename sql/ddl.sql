@@ -4,6 +4,10 @@ CREATE TABLE ITEMS (
                        ITEMNAME VARCHAR(100),
                        PRICE NUMBER(10),
                        QUANTITY NUMBER(10),
+                       OPEN VARCHAR(3),
+                       REGIONS VARCHAR(255),
+                       ITEMTYPE VARCHAR(10),
+                       DELIVERYCODE VARCHAR(10),
                        PRIMARY KEY(ID)
 );
 

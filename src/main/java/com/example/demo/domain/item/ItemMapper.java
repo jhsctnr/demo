@@ -9,7 +9,9 @@ import java.util.List;
 public interface ItemMapper {
 
     int saveItem(Item item);
+
     Item findById(Long id);
+
     List<Item> findAll();
 
     int updateItem(Item updateParam);

@@ -1,7 +1,6 @@
 package com.example.demo.web.item;
 
-import com.example.demo.domain.item.Item;
-import com.example.demo.domain.item.ItemMapper;
+import com.example.demo.domain.item.*;
 import com.example.demo.domain.member.Member;
 import com.example.demo.web.item.form.ItemSaveForm;
 import com.example.demo.web.item.form.ItemUpdateForm;
@@ -14,8 +13,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -24,6 +23,25 @@ import java.util.List;
 public class ItemController {
 
     private final ItemMapper itemMapper;
+
+    @ModelAttribute("itemTypes")
+    public ItemType[] itemTypes() {
+        return ItemType.values();
+    }
+
+    @ModelAttribute("regions")
+    public Map<String, String> regions() {
+        Map<String, String> regions = new LinkedHashMap<>();
+        regions.put("SEOUL", "서울");
+        regions.put("BUSAN", "부산");
+        regions.put("JEJU", "제주");
+        return regions;
+    }
+
+    @ModelAttribute("deliveryCodes")
+    public DeliveryCode[] deliveryCodes() {
+        return DeliveryCode.values();
+    }
 
     @GetMapping
     public String items(Model model) {
@@ -35,6 +53,9 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model) {
         Item item = itemMapper.findById(itemId);
+        List<String> regions = Arrays.asList(item.getRegions().split(","));
+        System.out.println("regions = " + regions);
+        model.addAttribute("selectedRegion", regions);
         model.addAttribute("item", item);
         return "items/item";
     }
@@ -47,6 +68,8 @@ public class ItemController {
 
     @PostMapping("/add")
     public String addItem(@Validated @ModelAttribute("item") ItemSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+
 
         //특정 필드 예외가 아닌 전체 예외
         if (form.getPrice() != null && form.getQuantity() != null) {
@@ -66,6 +89,11 @@ public class ItemController {
         item.setItemName(form.getItemName());
         item.setPrice(form.getPrice());
         item.setQuantity(form.getQuantity());
+        item.setOpen(form.getOpen());
+        item.setItemType(form.getItemType());
+        item.setDeliveryCode(form.getDeliveryCode());
+        String regions = form.getRegions().stream().collect(Collectors.joining(","));
+        item.setRegions(regions);
 
         itemMapper.saveItem(item);
         Long id = itemMapper.getId();
@@ -79,6 +107,9 @@ public class ItemController {
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemMapper.findById(itemId);
+        List<String> regions = Arrays.asList(item.getRegions().split(","));
+        System.out.println("regions = " + regions);
+        model.addAttribute("selectedRegion", regions);
         model.addAttribute("item", item);
         return "items/editForm";
     }
@@ -97,6 +128,11 @@ public class ItemController {
         itemParam.setItemName(form.getItemName());
         itemParam.setPrice(form.getPrice());
         itemParam.setQuantity(form.getQuantity());
+        itemParam.setOpen(form.getOpen());
+        itemParam.setItemType(form.getItemType());
+        itemParam.setDeliveryCode(form.getDeliveryCode());
+        String regions = form.getRegions().stream().collect(Collectors.joining(","));
+        itemParam.setRegions(regions);
 
         itemMapper.updateItem(itemParam);
         return "redirect:/items/{itemId}";

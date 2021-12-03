@@ -3,6 +3,8 @@ package com.example.demo.domain.item;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter @Setter
 public class Item {
 
@@ -10,6 +12,11 @@ public class Item {
     private String itemName;
     private Integer price;
     private Integer quantity;
+
+    private String open;
+    private String regions;
+    private String itemType;
+    private String deliveryCode;
 
     public Item() {
 

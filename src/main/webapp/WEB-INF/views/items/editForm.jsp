@@ -77,6 +77,54 @@
 
         <hr class="my-4">
 
+        <!--        single checkbox-->
+        <div>판매 여부</div>
+        <div>
+            <div class="form-check">
+                <input type="checkbox" id="open" name="open" class="form-check-input" ${item.open ne null ? 'checked' : ''}>
+                <label for="open" class="form-check-label">판매 오픈</label>
+                <input type="hidden" name="_open" value="on"/>
+            </div>
+        </div>
+
+        <!-- multi checkbox -->
+        <div>
+            <div>등록 지역</div>
+            <c:forEach var="region" items="${regions}" varStatus="status">
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" id="regions${status.count}" name="regions" value="${region.key}" ${selectedRegion.contains(region.key) ? 'checked' : ''}
+                           class="form-check-input">
+                    <label class="form-check-label" for="regions${status.count}">${region.value}</label>
+                </div>
+            </c:forEach>
+            <input type="hidden" name="_regions" value="on"/>
+        </div>
+
+        <!-- radio button -->
+        <div>
+            <div>상품 종류</div>
+            <c:forEach var="type" items="${itemTypes}" varStatus="status">
+                <div class="form-check form-check-inline">
+                    <input type="radio" id="itemType${status.count}" name="itemType" value="${type.name()}" ${item.itemType eq type.name() ? 'checked' : ''}
+                           class="form-check-input">
+                    <label class="form-check-label" for="itemType${status.count}">${type.description}</label>
+                </div>
+            </c:forEach>
+        </div>
+
+        <!-- SELECT -->
+        <div>
+            <div>배송 방식</div>
+            <select name="deliveryCode" class="form-select">
+                <option value="">==배송 방식 선택==</option>
+                <c:forEach var="deliveryCode" items="${deliveryCodes}">
+                    <option value="${deliveryCode.name()}" ${item.deliveryCode eq deliveryCode.name() ? 'selected' : ''}>${deliveryCode.description}</option>
+                </c:forEach>
+            </select>
+        </div>
+
+        <hr class="my-4">
+
         <div class="row">
             <div class="col">
                 <button class="w-100 btn btn-primary btn-lg" type="submit"><spring:message code="button.save"/></button>

@@ -6,10 +6,18 @@
     <insert id="saveItem" parameterType="com.example.demo.domain.item.Item">
         INSERT INTO ITEMS ( ITEMNAME
                           , PRICE
-                          , QUANTITY )
+                          , QUANTITY
+                          , OPEN
+                          , REGIONS
+                          , ITEMTYPE
+                          , DELIVERYCODE )
                    VALUES ( #{itemName}
                           , #{price}
-                          , #{quantity} )
+                          , #{quantity}
+                          , #{open}
+                          , #{regions}
+                          , #{itemType}
+                          , #{deliveryCode})
     </insert>
 
     <select id="findById" parameterType="long" resultType="com.example.demo.domain.item.Item">
@@ -31,9 +39,13 @@
 
     <update id="updateItem" parameterType="com.example.demo.domain.item.Item">
         UPDATE ITEMS
-           SET ITEMNAME = #{itemName}
-             , PRICE    = #{price}
-             , QUANTITY = #{quantity}
+           SET ITEMNAME     = #{itemName}
+             , PRICE        = #{price}
+             , QUANTITY     = #{quantity}
+             , OPEN         = #{open}
+             , REGIONS      = #{regions}
+             , ITEMTYPE     = #{itemType}
+             , DELIVERYCODE = #{deliveryCode}
          WHERE 1=1
            AND ID = #{id}
     </update>
