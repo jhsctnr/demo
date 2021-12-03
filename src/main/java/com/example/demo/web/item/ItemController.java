@@ -92,7 +92,20 @@ public class ItemController {
         item.setOpen(form.getOpen());
         item.setItemType(form.getItemType());
         item.setDeliveryCode(form.getDeliveryCode());
-        String regions = form.getRegions().stream().collect(Collectors.joining(","));
+
+        //String regions = form.getRegions().stream().collect(Collectors.joining(","));
+        List<String> regions1 = form.getRegions();
+        String regions = "";
+        int size = form.getRegions().size();
+        for (int i = 0; i < size; i++) {
+            if ("".equals(regions)) {
+                regions += regions1.get(i);
+            }
+            else {
+                regions += "," + regions1.get(i);
+            }
+        }
+
         item.setRegions(regions);
 
         itemMapper.saveItem(item);
