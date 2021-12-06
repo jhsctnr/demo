@@ -10,6 +10,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Properties;
 
 @Configuration
 public class RepositoryConfig {
@@ -22,6 +23,10 @@ public class RepositoryConfig {
         Resource[] resources = new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*_mapper.xml");
 
         sqlSessionFactoryBean.setMapperLocations(resources);
+
+//        Properties properties = new Properties();
+//        properties.put("mapUnderscoreToCamelCase", true);
+//        sqlSessionFactoryBean.setConfigurationProperties(properties);
 
         return sqlSessionFactoryBean.getObject();
     }

@@ -4,13 +4,14 @@ import com.example.demo.domain.member.Member;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ItemMapper {
 
-    int saveItem(Item item);
+    int saveItem(Map<String, Object> item);
 
-    Item findById(Long id);
+    Map<String, Object> findById(Map<String, Object> id);
 
     List<Item> findAll();
 
@@ -18,5 +19,5 @@ public interface ItemMapper {
 
     int deleteItem(Long id);
 
-    Long getId();
+//    Long getId();
 }

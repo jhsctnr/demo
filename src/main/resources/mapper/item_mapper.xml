@@ -3,27 +3,39 @@
 
 <mapper namespace="com.example.demo.domain.item.ItemMapper">
 
-    <select id="findById" parameterType="long" resultType="com.example.demo.domain.item.Item">
-        SELECT *
+    <select id="findById" parameterType="hashmap" resultType="hashmap">
+        SELECT id           as "id"
+             , itemName     as "itemName"
+             , price        as "price"
+             , quantity     as "quantity"
+             , open         as "open"
+             , regions      as "regions"
+             , itemType     as "itemType"
+             , deliveryCode as "deliveryCode"
           FROM ITEMS
-         WHERE ID = #{id}
+         WHERE ID = #{id, jdbcType=BIGINT}
     </select>
 
-    <insert id="saveItem" parameterType="com.example.demo.domain.item.Item">
-        INSERT INTO ITEMS ( ITEMNAME
-                          , PRICE
-                          , QUANTITY
-                          , OPEN
-                          , REGIONS
-                          , ITEMTYPE
-                          , DELIVERYCODE )
-                   VALUES ( #{itemName}
-                          , #{price}
-                          , #{quantity}
-                          , #{open}
-                          , #{regions}
-                          , #{itemType}
-                          , #{deliveryCode})
+    <insert id="saveItem" parameterType="hashmap" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ITEMS ( id
+                          , itemName
+                          , price
+                          , quantity
+                          , open
+                          , regions
+                          , itemType
+                          , deliveryCode  )
+                   VALUES ( #{id, jdbcType=BIGINT}
+                          , #{itemName, jdbcType=VARCHAR}
+                          , #{price, jdbcType=NUMERIC}
+                          , #{quantity, jdbcType=NUMERIC}
+                          , #{open, jdbcType=VARCHAR}
+                          , #{regions, jdbcType=VARCHAR}
+                          , #{itemType, jdbcType=VARCHAR}
+                          , #{deliveryCode, jdbcType=VARCHAR})
+<!--        <selectKey resultType="long" keyProperty="id" order="AFTER">-->
+<!--            SELECT LAST_INSERT_ID()-->
+<!--        </selectKey>-->
     </insert>
 
     <select id="findAll" resultType="com.example.demo.domain.item.Item">
@@ -31,10 +43,10 @@
           FROM ITEMS
     </select>
 
-    <select id="getId" resultType="long">
-        SELECT MAX(ID) AS id
-          FROM ITEMS
-    </select>
+<!--    <select id="getId" resultType="long">-->
+<!--        SELECT MAX(ID) AS id-->
+<!--          FROM ITEMS-->
+<!--    </select>-->
 
     <update id="updateItem" parameterType="com.example.demo.domain.item.Item">
         UPDATE ITEMS

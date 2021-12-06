@@ -4,6 +4,7 @@ import com.example.demo.domain.item.*;
 import com.example.demo.domain.member.Member;
 import com.example.demo.web.item.form.ItemSaveForm;
 import com.example.demo.web.item.form.ItemUpdateForm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -52,11 +53,17 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model) {
-        Item item = itemMapper.findById(itemId);
+//        Item item = itemMapper.findById(itemId);
+        Map<String, Object> itemIdMap = new HashMap<>();
+        itemIdMap.put("id", itemId);
+//        Map<String, Object> itemMap = itemMapper.findById(itemId);
+        Map<String, Object> itemMap = itemMapper.findById(itemIdMap);
+        ObjectMapper mapper = new ObjectMapper();
+        Item item = mapper.convertValue(itemMap, Item.class);
         List<String> regions = Arrays.asList(item.getRegions().split(","));
         System.out.println("regions = " + regions);
         model.addAttribute("selectedRegion", regions);
-        model.addAttribute("item", item);
+        model.addAttribute("item", itemMap);
         return "items/item";
     }
 
@@ -108,8 +115,12 @@ public class ItemController {
 
         item.setRegions(regions);
 
-        itemMapper.saveItem(item);
-        Long id = itemMapper.getId();
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> itemMap = mapper.convertValue(item, Map.class);
+
+        itemMapper.saveItem(itemMap);
+//        Long id = itemMap.getId();
+        Long id = (Long) itemMap.get("id");
 
         redirectAttributes.addAttribute("itemId", id);
         redirectAttributes.addAttribute("status", true);
@@ -119,9 +130,14 @@ public class ItemController {
 
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
-        Item item = itemMapper.findById(itemId);
+//        Item item = itemMapper.findById(itemId);
+        Map<String, Object> itemIdMap = new HashMap<>();
+        itemIdMap.put("id", itemId);
+//        Map<String, Object> itemMap = itemMapper.findById(itemId);
+        Map<String, Object> itemMap = itemMapper.findById(itemIdMap);
+        ObjectMapper mapper = new ObjectMapper();
+        Item item = mapper.convertValue(itemMap, Item.class);
         List<String> regions = Arrays.asList(item.getRegions().split(","));
-        System.out.println("regions = " + regions);
         model.addAttribute("selectedRegion", regions);
         model.addAttribute("item", item);
         return "items/editForm";
