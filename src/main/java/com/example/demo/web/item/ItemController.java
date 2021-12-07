@@ -51,6 +51,12 @@ public class ItemController {
         return "items/items";
     }
 
+    @GetMapping("/ajax")
+    @ResponseBody
+    public List<Item> itemsAjax() {
+        return itemMapper.findAll();
+    }
+
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model) {
 //        Item item = itemMapper.findById(itemId);

@@ -24,29 +24,18 @@
 
     <hr class="my-4">
     <div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th><spring:message code="label.item.id"/></th>
-                <th><spring:message code="label.item.itemName"/></th>
-                <th><spring:message code="label.item.price"/></th>
-                <th><spring:message code="label.item.quantity"/></th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="item" items="${items}">
-            <tr>
-                <td><a href="/items/${item.id}" >${item.id}</a></td>
-                <td><a href="/items/${item.id}" >${item.itemName}</a></td>
-                <td>${item.price}</td>
-                <td>${item.quantity}</td>
-            </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+        <div id="realgrid" style="width: 100%; height: 300px;"></div>
     </div>
 
 </div> <!-- /container -->
+<%--jquery--%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<%--realgrid--%>
+<script type="text/javascript" src="/resources/js/realgridjs-lic.js"></script>
+<script type="text/javascript" src="/resources/js/realgridjs_eval.1.1.39.min.js"></script>
+<script type="text/javascript" src="/resources/js/realgridjs-api.1.1.39.js"></script>
+<script type="text/javascript" src="/resources/js/jszip.min.js"></script>
+<script type="text/javascript" src="/resources/js/grid.js"></script>
 
 </body>
 </html>
