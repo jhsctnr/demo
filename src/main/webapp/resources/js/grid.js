@@ -75,8 +75,18 @@ $.ajax({
     }
 })
     .done(function(response) {
-        data = eval(response);
-        // console.log(data);
+        data = JSON.parse(JSON.stringify(response));
+
+        var itemTypes = [];
+        var set = new Set();
+        var value;
+        for(var i = 0; i < data.length; i++) {
+            set.add(data[i].itemType);
+        }
+        itemTypes = Array.from(set);
+        value = countItemTypes(itemTypes, data);
+
+        setBarChart(itemTypes, value);
         dataProvider.setRows(data);
     });
 
@@ -85,3 +95,44 @@ gridView.onDataCellClicked = function (grid, index) {
         location.href = "/items/" + grid.getValue(index.itemIndex, "id");
     }
 };
+
+
+
+function countItemTypes(itemTypes, data) {
+    var countingNumber = [];
+    for (var i = 0; i < itemTypes.length; i++) {
+        var count = 0;
+        for (var j = 0; j < data.length; j++) {
+            if (itemTypes[i] === data[j].itemType) {
+                count++;
+            }
+        }
+        countingNumber.push(count);
+    }
+    return countingNumber;
+}
+
+function setBarChart(categories, value) {
+    Highcharts.chart('container', {
+
+        title: {
+            text: 'Quantity'
+        },
+        xAxis: {
+            categories: categories,
+        },
+
+        plotOptions: {
+            series: {
+                relativeXValue: true
+            }
+        },
+
+        series: [{
+            name: 'count',
+            data: value,
+            type: 'column'
+        }]
+    });
+}
+

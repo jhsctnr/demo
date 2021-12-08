@@ -25,6 +25,7 @@
     <hr class="my-4">
     <div>
         <div id="realgrid" style="width: 100%; height: 300px;"></div>
+        <div id="container" style="width:100%; height:400px;"></div>
     </div>
 
 </div> <!-- /container -->
@@ -35,7 +36,9 @@
 <script type="text/javascript" src="/resources/js/realgridjs_eval.1.1.39.min.js"></script>
 <script type="text/javascript" src="/resources/js/realgridjs-api.1.1.39.js"></script>
 <script type="text/javascript" src="/resources/js/jszip.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
 <script type="text/javascript" src="/resources/js/grid.js"></script>
+<script type="text/javascript" src="/resources/js/chart.js"></script>
 
 </body>
 </html>
