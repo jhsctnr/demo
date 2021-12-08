@@ -39,7 +39,14 @@
     </insert>
 
     <select id="findAll" resultType="com.example.demo.domain.item.Item">
-        SELECT *
+        SELECT id           as "id"
+             , itemName     as "itemName"
+             , price        as "price"
+             , quantity     as "quantity"
+             , open         as "open"
+             , regions      as "regions"
+             , itemType     as "itemType"
+             , deliveryCode as "deliveryCode"
           FROM ITEMS
     </select>
 

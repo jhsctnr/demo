@@ -22,6 +22,9 @@ var columns = [
         header : {
             text: "상품명"
         },
+        footer: {
+            text: '합계'
+        },
         width: 100
     },
     {
@@ -30,6 +33,12 @@ var columns = [
         header : {
             text: "가격"
         },
+        footer: {
+            text: "합계",
+            expression: "sum",
+            groupText: "합계",
+            groupExpression: "sum"
+        },
         width: 100
     },
     {
@@ -37,6 +46,12 @@ var columns = [
         fieldName: "quantity",
         header : {
             text: "수량"
+        },
+        footer: {
+            text: "합계",
+            expression: "sum",
+            groupText: "합계",
+            groupExpression: "sum"
         },
         width: 100
     },
@@ -54,10 +69,12 @@ var fields = [
         fieldName: "itemName"
     },
     {
-        fieldName: "price"
+        fieldName: "price",
+        dataType: "number",
     },
     {
-        fieldName: "quantity"
+        fieldName: "quantity",
+        dataType: "number",
     },
 ];
 
@@ -74,7 +91,7 @@ $.ajax({
     }
 })
     .done(function(response) {
-        var data = JSON.parse(JSON.stringify(response));
+        var data = response;
         setBarChart(data);
         dataProvider.setRows(data);
         setHiChart(dataProvider);
