@@ -25,6 +25,7 @@
     <hr class="my-4">
     <div>
         <div id="realgrid" style="width: 100%; height: 300px;"></div>
+        <div id="container1" style="width:100%; height:400px;"></div>
         <div id="container" style="width:100%; height:400px;"></div>
     </div>
 

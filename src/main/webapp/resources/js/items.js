@@ -77,6 +77,7 @@ $.ajax({
         var data = JSON.parse(JSON.stringify(response));
         setBarChart(data);
         dataProvider.setRows(data);
+        setHiChart(dataProvider);
     });
 
 //클릭 이벤트 페이지 이동
@@ -139,6 +140,46 @@ function setBarChart(data) {
             data: countingNumber,
             type: 'column'
         }]
+    });
+}
+
+function setHiChart(provider) {
+    var categories = provider.getFieldValues("itemName");
+    var quantity = provider.getFieldValues("quantity").map(x => Number(x));
+
+    Highcharts.chart('container1', {
+        title: {
+            text: '제품 수량'
+        },
+        xAxis: {
+            categories: categories,
+            crosshair: true,
+        },
+        yAxis:[{
+            title: {
+                text: '개수 (EA)',
+            },
+            labels: {
+                format: '{value} EA'
+            }
+        }],
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            enabled: false
+        },
+        series: [{
+            // showInLegend: false,
+            name: 'Quantity',
+            data: quantity,
+            tooltip: {
+                valueSuffix: " EA"
+            }
+        }],
+        chart: {
+            type: 'column'
+        }
     });
 }
 
