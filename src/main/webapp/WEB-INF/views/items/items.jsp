@@ -37,8 +37,7 @@
 <script type="text/javascript" src="/resources/js/realgridjs-api.1.1.39.js"></script>
 <script type="text/javascript" src="/resources/js/jszip.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.src.js"></script>
-<script type="text/javascript" src="/resources/js/grid.js"></script>
-<script type="text/javascript" src="/resources/js/chart.js"></script>
+<script type="text/javascript" src="/resources/js/items.js"></script>
 
 </body>
 </html>

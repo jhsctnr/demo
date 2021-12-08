@@ -64,8 +64,7 @@ var fields = [
 //setFields()함수로 그리드에 반영
 dataProvider.setFields(fields);
 
-var data;
-
+// 비동기 통신 성공 시 그리드, 차트 호출
 $.ajax({
     url: "/items/ajax",
     type: "GET",
@@ -75,31 +74,33 @@ $.ajax({
     }
 })
     .done(function(response) {
-        data = JSON.parse(JSON.stringify(response));
-
-        var itemTypes = [];
-        var set = new Set();
-        var value;
-        for(var i = 0; i < data.length; i++) {
-            set.add(data[i].itemType);
-        }
-        itemTypes = Array.from(set);
-        value = countItemTypes(itemTypes, data);
-
-        setBarChart(itemTypes, value);
+        var data = JSON.parse(JSON.stringify(response));
+        setBarChart(data);
         dataProvider.setRows(data);
     });
 
+//클릭 이벤트 페이지 이동
 gridView.onDataCellClicked = function (grid, index) {
     if ("itemName" === index.fieldName || "id" === index.fieldName) {
         location.href = "/items/" + grid.getValue(index.itemIndex, "id");
     }
 };
 
+//차트 그리는 메서드
+function setBarChart(data) {
 
+    //아이템 타입을 찾는다.
+    var itemTypes = [];
+    var set = new Set();
 
-function countItemTypes(itemTypes, data) {
+    for(var i = 0; i < data.length; i++) {
+        set.add(data[i].itemType);
+    }
+    itemTypes = Array.from(set);
+
+    //아이템 타입 별 개수를 구한다.
     var countingNumber = [];
+
     for (var i = 0; i < itemTypes.length; i++) {
         var count = 0;
         for (var j = 0; j < data.length; j++) {
@@ -109,28 +110,33 @@ function countItemTypes(itemTypes, data) {
         }
         countingNumber.push(count);
     }
-    return countingNumber;
-}
 
-function setBarChart(categories, value) {
+    //차트를 그린다.
     Highcharts.chart('container', {
 
         title: {
-            text: 'Quantity'
+            text: '수량'
         },
         xAxis: {
-            categories: categories,
+            categories: itemTypes,
+        },
+        yAxis:{
+            title: {
+                text: '개수(EA)',
+            }
         },
 
         plotOptions: {
             series: {
-                relativeXValue: true
+                relativeXValue: true,
+                label: false,
             }
         },
 
         series: [{
-            name: 'count',
-            data: value,
+            showInLegend: false,
+            name: '개수',
+            data: countingNumber,
             type: 'column'
         }]
     });
