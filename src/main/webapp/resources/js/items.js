@@ -141,6 +141,9 @@ function setBarChart(data) {
         yAxis:{
             title: {
                 text: '개수(EA)',
+            },
+            labels: {
+                format: '{value} EA'
             }
         },
 
